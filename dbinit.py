@@ -39,14 +39,14 @@ def insert_serp(querry, serp_list):
     cursor.execute(sqlite_select_query)
     record = cursor.fetchone()
     id = record[0]
-    today = date.today()
+    today = str(date.today())
 
     sqlite_select_query = f'SELECT * from serp where querry = {id} and date="{today}"'
     cursor.execute(sqlite_select_query)
     record = cursor.fetchone()
     if not record == None:
-        sql = f'DELETE serp where querry = {id} and date="{today}"'
-        cursor.execute(sqlite_select_query)
+        sql = f'DELETE from serp where querry = {id} and date="{today}"'
+        cursor.execute(sql)
         sqlite_connection.commit()
         print(f'deleted from {today}')
 
@@ -61,9 +61,39 @@ def insert_serp(querry, serp_list):
     cursor.close()
     sqlite_connection.close()
 
+def add_from_csv():
+    sqlite_connection = sqlite3.connect('baseSerp.db', timeout=10)
+    cursor = sqlite_connection.cursor()
+    # sql = f'INSERT INTO querries (id, querry)\
+    #       VALUES(?, ?)'
+    # cursor.execute(sql, (None, 'kochetkov spb')) #3
+    # cursor.execute(sql, (None, 'kochetkov'))     #4
+    # sqlite_connection.commit()
+
+    sql = f'INSERT INTO serp (id, date, num, querry, site)\
+          VALUES(?, ?, ?, ?, ?)'
+
+    import csv
+    with open("kochetkov spb.csv", newline='') as csvfile:
+        serp = csv.reader(csvfile)
+        for row in serp:
+            cursor.execute(sql, (None, row[0], row[1], 3, row[2]))
+            sqlite_connection.commit()
+            print(row)
+    with open("kochetkov.csv", newline='') as csvfile:
+        serp = csv.reader(csvfile)
+        for row in serp:
+            cursor.execute(sql, (None, row[0], row[1], 4, row[2]))
+            sqlite_connection.commit()
+            print(row)
+
+    cursor.close()
+    sqlite_connection.close()
 
 
 
 if __name__ == '__main__':
-    # createDB()
-    insert_serp('test', ['site1', 'site2'])
+    createDB()
+    # add_from_csv()
+    # insert_serp('test', ['site1', 'site2'])
+    # insert_serp('test 2', ['site3', 'site4'])

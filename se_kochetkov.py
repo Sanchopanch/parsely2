@@ -1,13 +1,12 @@
 from parse_serp import get_serp
-from datetime import date
+from dbinit import insert_serp
 
 if __name__ == '__main__':
-    today = date.today()
-    rez = get_serp('kochetkov')
-    lines = []
-    for i, app in enumerate(rez):
-        lines.append("%s,%i,%s\n"%(today,i+1,app))
-    file1 = open("kochetkov.csv", "a")
-    file1.writelines(lines)
-    file1.close()  # to change file access modes
-    print('add', len(lines), 'rows')
+    try:
+        rez = get_serp('kochetkov')
+    except:
+        print('error')
+        quit()
+    if len(rez)>0:
+        insert_serp('kochetkov', rez)
+    print('add', len(rez), 'rows')
