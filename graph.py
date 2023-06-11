@@ -19,14 +19,14 @@ def diagr(word):
 
 
 
-    df = df.assign(F = 7.5)
-    df.loc[df['site']=='kochetkob.spb.ru', 'F'] = 2.0
+    df = df.assign(F = 1.0)
+    df.loc[df['site']=='kochetkob.spb.ru', 'F'] = 3.0
     # df.loc[df['site']=='kochetkob.spb.ru', 'site'] = 16599713015387340
 
     sns.set_theme(style="ticks")
     f, ax = plt.subplots()
     plt.xticks(rotation = 'vertical')
-
+    plt.rcParams['legend.fontsize'] = 6
 
     ax.tick_params(axis='x', rotation=90)
     g = sns.relplot(
@@ -37,7 +37,7 @@ def diagr(word):
         height=17, aspect=.6, facet_kws=dict(sharex=False), linewidth=6.5, legend=True
     )
 
-    # plt.setp(g.get_legend().get_texts(), fontsize='22')
+    g.axes[0][0].invert_yaxis()
 
     for i, ax in enumerate(g.fig.axes):   ## getting all axes of the fig object
          ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
