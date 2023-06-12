@@ -4,6 +4,8 @@ import pandas as pd
 import sqlite3
 import random
 
+from matplotlib.ticker import MultipleLocator
+
 def diagr(word):
     number_of_colors = 200
     color = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
@@ -19,30 +21,42 @@ def diagr(word):
 
 
 
-    df = df.assign(F = 1.0)
-    df.loc[df['site']=='kochetkob.spb.ru', 'F'] = 3.0
+    df = df.assign(F = 3.0)
+    df.loc[df['site']=='kochetkov.spb.ru', 'F'] = 5.0
     # df.loc[df['site']=='kochetkob.spb.ru', 'site'] = 16599713015387340
 
     sns.set_theme(style="ticks")
+    # sns.set_style("darkgrid")
     f, ax = plt.subplots()
     plt.xticks(rotation = 'vertical')
     plt.rcParams['legend.fontsize'] = 6
 
+    unique = df["site"].unique()
+    palette = dict(zip(unique, sns.color_palette(n_colors=len(unique))))
+    # palette.update({"Total": "k"})
+    palette['kochetkov.spb.ru'] = (0., 0., 0.)
+
     ax.tick_params(axis='x', rotation=90)
     g = sns.relplot(
         data=df,
-        x="date", y="num", size="F",
-        hue="site", #col="site",
-        kind="line" ,#palette=palette,
-        height=17, aspect=.6, facet_kws=dict(sharex=False), linewidth=6.5, legend=True
+        x="date", y="num", sizes="F",
+        hue="site",# col="F",
+        kind="line", palette=palette,
+        height=10, aspect=0.7, facet_kws=dict(sharex=False), linewidth=3.5, legend='full'
+
     )
 
     g.axes[0][0].invert_yaxis()
+    for ax in g.axes.flatten():
+        ax.grid()
 
     for i, ax in enumerate(g.fig.axes):   ## getting all axes of the fig object
          ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+    # plt.gridd()
+    ax.yaxis.set_major_locator(MultipleLocator(1))
     plt.show()
     g.fig.show()
+
 
 
 if __name__ == '__main__':
