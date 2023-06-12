@@ -11,7 +11,9 @@ df = pd.read_sql_query(f'SELECT se.date,se.num, se.site FROM serp as se, querrie
                        --and se.date>"2023-06-11"', sqlite_connection)
 sqlite_connection.close()
 
-fig = px.line(df, x="date", y="num", color="site", markers=True)
+fig = px.line(df, x="date", y="num", color="site", markers=True, title=word,
+              color_discrete_sequence=px.colors.qualitative.Pastel
+              )
 fig.update_traces(textposition="bottom right")
 fig.update_layout(yaxis=dict(autorange="reversed", title=word))
 fig.update_yaxes(dtick=1, showgrid=True)
