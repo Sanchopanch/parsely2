@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-def get_serp(key_word):
+def get_serp(key_word, pages=3):
     key_word_plus = key_word.replace(' ','+')
     options = Options()
     # options.add_argument('--headless')
@@ -27,42 +27,38 @@ def get_serp(key_word):
     print(f'found targ text={elementList[0].text} class={targClass}')
     targClass = targClass.replace(' ', '.')
 
-    driver.get(f'https://www.google.com/search?q={key_word_plus}')
     rez = []
+    driver.get(f'https://www.google.com/search?q={key_word_plus}')
 
     # первая страница ***************************************************
     links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
     for el in links:
         if not el.text == '':
-            # print(f' lin ={el.text}')
-            rez.append(el.text.split('›')[0].replace('https://', '').replace('http://', '').strip())
+            site = el.text.split('›')[0].replace('https://', '').replace('http://', '').strip()
+            if site.startswith('www.'):
+                site = site[4:]
+            rez.append(site)
 
-    nextLink = driver.find_elements(By.ID, 'pnnext')
-    driver.get(nextLink[0].get_attribute("href"))
+    for page in range(pages-1):
 
-    # вторая страница ***************************************************
+        nextLink = driver.find_elements(By.ID, 'pnnext')
+        driver.get(nextLink[0].get_attribute("href"))
 
-    links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
-    for el in links:
-        if not el.text == '':
-            # print(f' lin ={el.text}')
-            rez.append(el.text.split('›')[0].replace('https://', '').replace('http://', '').strip())
-    nextLink = driver.find_elements(By.ID, 'pnnext')
-    driver.get(nextLink[0].get_attribute("href"))
+    # вторая страница и далее ***************************************************
 
-    nextLink = driver.find_elements(By.ID, 'pnnext')
-    driver.get(nextLink[0].get_attribute("href"))
-    # третья страница ***************************************************
-
-    links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
-    for el in links:
-        if not el.text == '':
-            # print(f' lin ={el.text}')
-            rez.append(el.text.split('›')[0].replace('https://', '').replace('http://', '').strip())
+        links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
+        for el in links:
+            if not el.text == '':
+                site = el.text.split('›')[0].replace('https://', '').replace('http://', '').strip()
+                if site.startswith('www.'):
+                    site = site[4:]
+                rez.append(site)
+                # print(site)
 
     driver.close()
     return rez
 
 if __name__ == "__main__":
-    serp = get_serp('kochetkov spb')
+    serp = get_serp('точка росы')
     print(serp)
+    print(f'{len(serp)} rows')
