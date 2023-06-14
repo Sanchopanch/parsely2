@@ -2,7 +2,7 @@ import plotly.express as px
 import pandas as pd
 import sqlite3
 
-word = 'точка росы'
+word = 'kochetkov spb'
 
 df = px.data.gapminder().query("country in ['Canada', 'Botswana']")
 sqlite_connection = sqlite3.connect('baseSerp.db', timeout=10)

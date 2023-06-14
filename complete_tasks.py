@@ -7,6 +7,7 @@ class Task():
         self.deep = deep
         self.complete = False
         self.error = ''
+        self.tries = 3
 
 if __name__ == '__main__':
     keys = ['kochetkov', 'kochetkov spb', 'точка росы']
@@ -14,13 +15,34 @@ if __name__ == '__main__':
     for key in keys:
         tasks.append(Task(key, 4))
 
-    for task in tasks:
-        try:
-            rez = get_serp(task.key, task.deep)
-        except:
-            print('error')
-            quit()
-        if len(rez)>0:
-            insert_serp(task.key, rez)
-        print(f'add {len(rez)} rows for {task.key}')
-    print(f'all {len(tasks)} tasks complete!!!')
+    somthong_worng = False
+    for _ in range(3):
+        for task in tasks:
+            if task.complete:
+                continue
+            if task.tries == 0:
+                task.error = 'error'
+                somthong_worng = True
+                continue
+
+            try:
+                rez = get_serp(task.key, task.deep)
+            except:
+                task.tries -=1
+
+            if len(rez)>0:
+                insert_serp(task.key, rez)
+                task.complete = True
+                print(f'add {len(rez)} rows for {task.key}')
+
+    if not somthong_worng:
+        print(f'***************** ALL {len(tasks)} tasks COMPLETE!!! ************')
+    else:
+        comp = 0
+        uncomp = 0
+        for task in tasks:
+            if task.complete:
+                comp +=1
+            else:
+                uncomp +=1
+        print(f'??????? completed {comp}, uncompl {uncomp} ???????')
