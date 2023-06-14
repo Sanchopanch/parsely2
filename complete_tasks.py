@@ -21,5 +21,6 @@ if __name__ == '__main__':
             print('error')
             quit()
         if len(rez)>0:
-            insert_serp('kochetkov', rez)
+            insert_serp(task.key, rez)
         print(f'add {len(rez)} rows for {task.key}')
+    print(f'all {len(tasks)} tasks complete!!!')
