@@ -6,7 +6,6 @@ import random as rnd
 word = 'kochetkov spb'
 my_sites = ['kochetkov.spb.ru', 'теплорасчет.рф']
 
-df = px.data.gapminder().query("country in ['Canada', 'Botswana']")
 sqlite_connection = sqlite3.connect('baseSerp.db', timeout=10)
 df = pd.read_sql_query(f'SELECT se.date,se.num, se.site  \
                        ,case when se.site in {str(my_sites).replace("[","(").replace("]",")")} then 1 else 0 end as ord\
