@@ -55,7 +55,7 @@ def insert_serp(querry, serp_list):
               VALUES(?, ?, ?, ?, ?)'
         cursor.execute(sql, (None, today, i+1, id, site))
     sqlite_connection.commit()
-    print(f'insterted {i+1} rows')
+    # print(f'insterted {i+1} rows')
 
 
     cursor.close()

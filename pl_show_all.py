@@ -53,5 +53,5 @@ def plot_all(my_sites, words_list):
 
 if __name__ == "__main__":
     my_sites = ['kochetkov.spb.ru', 'теплорасчет.рф']
-    words_list = ['kochetkov', 'kochetkov spb', 'точка росы']
+    words_list = ['kochetkov', 'kochetkov spb', 'точка росы', 'точка росы расчет','утеплитель купить']
     plot_all(my_sites, words_list)

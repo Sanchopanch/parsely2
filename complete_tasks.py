@@ -10,10 +10,15 @@ class Task():
         self.tries = 3
 
 if __name__ == '__main__':
-    keys = ['kochetkov', 'kochetkov spb', 'точка росы']
     tasks = []
-    for key in keys:
-        tasks.append(Task(key, 4))
+    tasks.append(Task('kochetkov', 4))
+    tasks.append(Task('kochetkov spb', 3))
+    tasks.append(Task('точка росы', 5))
+    tasks.append(Task('точка росы расчет', 2))
+    tasks.append(Task('утеплитель купить', 6))
+
+
+
 
     somthong_worng = False
     for _ in range(3):
