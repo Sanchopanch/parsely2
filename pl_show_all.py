@@ -29,6 +29,7 @@ def plot_word(fig, word, row, my_sites):
             'x': df.query(f'site == "{site}"')['date'],
             'y': df.query(f'site == "{site}"')['num'],
             'name': site,
+            'text': site,
             'mode': 'lines+markers',
             'type': 'scatter',
             'line': {'color': color}
@@ -46,8 +47,6 @@ def plot_all(my_sites, words_list):
     fig.update_yaxes(autorange="reversed", dtick=1, showgrid=True, rangemode ="nonnegative")
     fig.update_traces(marker_line_width=1, marker_size=15, line_width=10)
     fig['layout'].update(height=len(words_list) * 800)
-
-    # fig.update_traces()
 
     fig.show()
 
