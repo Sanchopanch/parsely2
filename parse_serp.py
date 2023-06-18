@@ -3,14 +3,18 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from pyvirtualdisplay import Display
 
 def get_serp(key_word, pages=3):
     key_word_plus = key_word.replace(' ','+')
+    display = Display(visible=1, size=(1200, 800))
+    display.start()
     options = Options()
     # options.add_argument('--headless')
     # options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome()
     driver.get('https://www.google.com/search?q=facebook')
 
     exelement = driver.find_element(By.PARTIAL_LINK_TEXT, 'Facebook')
@@ -56,6 +60,7 @@ def get_serp(key_word, pages=3):
                 # print(site)
 
     driver.close()
+    display.stop()
     return rez
 
 if __name__ == "__main__":
