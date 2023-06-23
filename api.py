@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from datetime import datetime
 import sqlite3
 import uvicorn
@@ -6,16 +6,22 @@ import uvicorn
 app = FastAPI()
 
 @app.get("/")
-async def read_root(start_date: str, word: str):
+async def read_root(start_date: str, word: str, my_sites: list = Query()):
     conn = sqlite3.connect('baseSerp.db', timeout=10)
     c = conn.cursor()
     start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-    c.execute(f'SELECT se.date,se.num, se.site  \
+    my_sites = [i.strip() for i in my_sites]
+    sql = f'SELECT se.date,se.num, se.site  \
+    ,case when se.site in {str(my_sites).replace("[", "(").replace("]", ")")} then 1 else 0 end as ord\
                                FROM serp as se, querries as q    \
                                where q.id= se.querry and q.querry="{word}"\
                                and se.date>="{start_date}" \
+                               order by ord\
                                \
-                               ')
+                               '
+    c.execute(sql)
+    print(my_sites)
+
     rows = c.fetchall()
     results = []
     for row in rows:
