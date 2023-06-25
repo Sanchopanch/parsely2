@@ -17,7 +17,7 @@ def plot_word(fig, word, row, my_sites):
         data = response.json()['data']
         df = pd.DataFrame(data)
     else:
-        print("Ошибка при запросе данных")
+        print(f"Ошибка при запросе данных {word}")
         return False
 
     unique_sites = df["site"].unique()

@@ -20,7 +20,7 @@ async def read_root(start_date: str, word: str, my_sites: list = Query()):
                                \
                                '
     c.execute(sql)
-    print(my_sites)
+    # print(my_sites)
 
     rows = c.fetchall()
     results = []
