@@ -29,7 +29,7 @@ if __name__ == '__main__':
                 task.error = 'error'
                 somthong_worng = True
                 continue
-
+            rez = []
             try:
                 rez = get_serp(task.key, task.deep)
             except:
@@ -39,6 +39,7 @@ if __name__ == '__main__':
                 insert_serp(task.key, rez)
                 task.complete = True
                 print(f'add {len(rez)} rows for {task.key}')
+                print(rez)
 
     if not somthong_worng:
         print(f'***************** ALL {len(tasks)} tasks COMPLETE!!! ************')

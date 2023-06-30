@@ -16,6 +16,7 @@ def get_serp(key_word, pages=3):
     # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver = webdriver.Chrome()
     driver.get('https://www.google.com/search?q=facebook')
+    driver.delete_all_cookies()
 
     exelement = driver.find_element(By.PARTIAL_LINK_TEXT, 'Facebook')
     # print(
@@ -28,11 +29,12 @@ def get_serp(key_word, pages=3):
     # print(val)
     elementList = elementList[0].find_elements(By.TAG_NAME, "cite")
     targClass = elementList[0].get_attribute("class")
-    print(f'found targ text={elementList[0].text} class={targClass}')
+    print(f'found serp class={targClass}')
     targClass = targClass.replace(' ', '.')
 
     rez = []
     driver.get(f'https://www.google.com/search?q={key_word_plus}')
+    driver.delete_all_cookies()
 
     # первая страница ***************************************************
     links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
@@ -47,8 +49,9 @@ def get_serp(key_word, pages=3):
 
         nextLink = driver.find_elements(By.ID, 'pnnext')
         driver.get(nextLink[0].get_attribute("href"))
+        driver.delete_all_cookies()
 
-    # вторая страница и далее ***************************************************
+        # вторая страница и далее ***************************************************
 
         links = driver.find_elements(By.CSS_SELECTOR, f'cite.{targClass}')
         for el in links:
@@ -59,11 +62,12 @@ def get_serp(key_word, pages=3):
                 rez.append(site)
                 # print(site)
 
+    driver.delete_all_cookies()
     driver.close()
     display.stop()
     return rez
 
 if __name__ == "__main__":
-    serp = get_serp('точка росы')
+    serp = get_serp('утеплитель купить')
     print(serp)
     print(f'{len(serp)} rows')
