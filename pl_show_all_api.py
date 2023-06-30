@@ -5,13 +5,14 @@ import plotly.express as px
 import pandas as pd
 import requests
 import random as rnd
+from addr_cfg import addr
 
 
 def plot_word(fig, word, row, my_sites):
     start_date = '2023-06-01'
-
     ms_add = ' '.join([f'&my_sites={ms}' for ms in my_sites])
-    response = requests.get(f"http://192.168.1.33:8880/?start_date={start_date}&word={word}{ms_add}")
+    response = requests.get(f"http://{addr}:8880/?start_date={start_date}&word={word}{ms_add}")
+    # response = requests.get(f"http://192.168.1.33:8880/?start_date={start_date}&word={word}{ms_add}")
     # response = requests.get(f"http://127.0.0.1:8880/?start_date={start_date}&word={word}{ms_add}")
     if response.ok:
         data = response.json()['data']
